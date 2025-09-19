@@ -8,6 +8,8 @@ import HomePage from './Pages/HomePage.jsx';
 import Header from './Components/Header.jsx'
 import Home from './Layout/Home.jsx'
 import Footer from './Components/Footer.jsx'
+import ProductPage from './Layout/ProductPage.jsx';
+import ProductPage2 from './Layout/ProductPage2.jsx';
 import 'antd/dist/reset.css';
 import {
   createBrowserRouter,
@@ -32,7 +34,16 @@ const router = createBrowserRouter([
   {
     path: "/Footer",
     Component: Footer,
+  },
+  {
+    path: "/ProductPage",
+    Component: ProductPage,
+  },
+  {
+    path: "/ProductPage2",
+    Component: ProductPage2,
   }
+
 ]);
 
 createRoot(document.getElementById('root')).render(
