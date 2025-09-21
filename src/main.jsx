@@ -10,6 +10,11 @@ import Home from './Layout/Home.jsx'
 import Footer from './Components/Footer.jsx'
 import ProductPage from './Layout/ProductPage.jsx';
 import ProductPage2 from './Layout/ProductPage2.jsx';
+import ShoppingCart from './Layout/ShoppingCart.jsx';
+import Step1 from './Layout/Step1.jsx';
+import Step3 from './Layout/Step3.jsx';
+import PageProduct from './Pages/PageProduct.jsx';
+import PhonePage from './Pages/PhonePage.jsx';
 import 'antd/dist/reset.css';
 import {
   createBrowserRouter,
@@ -42,7 +47,28 @@ const router = createBrowserRouter([
   {
     path: "/ProductPage2",
     Component: ProductPage2,
+  },
+  {
+    path: "/ShoppingCart",
+    Component: ShoppingCart,
+  },
+  {
+    path: "/Step1",
+    Component: Step1,
+  },
+  {
+    path: "/Step3",
+    Component: Step3,
+  },
+  {
+    path: "/PageProduct",
+    Component: PageProduct,
+  },
+  {
+    path: "/PhonePage",
+    Component: PhonePage,
   }
+
 
 ]);
 

@@ -52,7 +52,7 @@ const ProductPage2 = () => {
         <>
             <div className="py-[44px] px-[160px]">
                 <Breadcrumb
-                    className="font-[300] text-[16px]"
+                    className=" hidden md:block md:font-[300] md:text-[16px]"
                     separator=">"
                     items={[
                         { title: "Home" },
@@ -62,9 +62,10 @@ const ProductPage2 = () => {
                     ]}
                 />
             </div>
-            <div className="px-[160px] w-[100%] flex mt-[80px]">
-                <div className='flex w-[50%] justify-between '>
-                    <div className="flex flex-col gap-3 pt-[100px] ">
+            <div className=" px-[50px] md:px-[100px] lg:px-[160px] w-full flex flex-col xl:flex-row mt-[5px] items-center  gap-6">
+                <div className=" flex flex-col w-full xl:flex-row  xl:w-[50%] justify-between">
+                    {/* Thumbnail */}
+                    <div className="flex w-full  xl:w-[20%] mt-[30px] gap-3 order-2 xl:order-1 justify-between xl:flex-col xl:justify-start xl:pt-[100px]">
                         {product.map((item) => (
                             <div
                                 key={item.id}
@@ -73,37 +74,34 @@ const ProductPage2 = () => {
                                 <img
                                     src={item.img}
                                     alt={`Thumbnail ${item.id}`}
-                                    className="w-full h-full object-contain"
+                                    className="w-[46px] h-[93px] object-contain"
                                 />
                             </div>
                         ))}
                     </div>
-                    <div className='mt-[45px]'>
-                        <div className="">
-                            {mainImg.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className=" "
-                                >
-                                    <img
-                                        src={item.img}
-                                        alt={`Thumbnail ${item.id}`}
-                                        className="w-[415px] h-[516px] object-cover"
-                                    />
-                                </div>
-                            ))}
-                        </div>
+
+                    {/* Main Image */}
+                    <div className="mt-[45px] order-1 xl:order-2 flex justify-center xl:block">
+                        {mainImg.map((item) => (
+                            <div key={item.id}>
+                                <img
+                                    src={item.img}
+                                    alt={`Main ${item.id}`}
+                                    className=" w-[415px] h-[516px] object-contain"
+                                />
+                            </div>
+                        ))}
                     </div>
                 </div>
-                <div className='flex-1 ml-[42px] '>
-                    <h1 className="text-2xl font-bold">Apple iPhone 14 Pro Max</h1>
+                <div className=' flex-1 ml-[42px] px-[20px] '>
+                    <h1 className="  text-center text-[42px] font-[700]  md:text-left md:text-[42px] lg:text-2xl ">Apple iPhone 14 Pro Max</h1>
                     <div className="flex items-center gap-4 mt-[24px] mb-[16px]">
-                        <span className="text-2xl font-semibold text-black">$1399</span>
+                        <span className="text-[32px] font-[] md:text-2xl font-semibold text-black">$1399</span>
                         <span className="text-gray-400 line-through">$1499</span>
                     </div>
                     <div className='flex items-center gap-[24px]' >
                         <span className=''>Set color :</span>
-                        <div className='flex items-center gap-[8px]'>
+                        <div className='flex gap-[20px] md:gap-[8px] items-center  '>
                             {colors.map((item) => (
                                 <button
                                     key={item.id}
@@ -136,7 +134,7 @@ const ProductPage2 = () => {
                         </div>
                     </div>
                     <div>
-                        <div className="grid grid-cols-3 gap-4 mt-[24px]">
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-[24px]">
                             <div className="flex items-center  px-[16px] pt-[12px] border-none rounded-[8px] bg-[#F4F4F4]">
                                 <i className="fa-solid fa-mobile-screen-button text-gray-600 text-[16px] mr-[6px]"></i>
                                 <div className="flex flex-col leading-[0.4]">
@@ -192,7 +190,7 @@ const ProductPage2 = () => {
                         </div>
                     </div>
                     <div className='leading-[1.5]  text-[14px] font-[400] text-[#2C2C2C] pt-[24px]  '>
-                        <p className='tracking-[0.3px]'>Enhanced capabilities thanks toan enlarged display of 6.7 inchesand work without rechargingthroughout the day. Incredible photosas in weak, yesand in bright lightusing the new systemwith two cameras more...</p>
+                        <p className='leading-[2] tracking-[1.5px] md:tracking-[0.3px]'>Enhanced capabilities thanks toan enlarged display of 6.7 inchesand work without rechargingthroughout the day. Incredible photosas in weak, yesand in bright lightusing the new systemwith two cameras more...</p>
                     </div>
                     <div className='py-[32px] flex gap-[16px]'>
                         <button className='border px-[78px] rounded-[6px]  font-[700]  py-[16px] '>Add to Wishlist</button>

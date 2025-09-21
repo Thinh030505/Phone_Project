@@ -2,12 +2,15 @@
 const Header = () => {
     return (
         <div className="w-[100%]">
-            <header className="bg-[#4FFFF] px-[160px] py-[16px]">
-                <div className="flex items-center justify-between ">
+            <header className="bg-[#4FFFF] px-[50px] sm:py-[16px]  lg:px-[160px] py-[16px]">
+                <div className="flex justify-between md:flex items-center sm:justify-between">
+
                     <div className="flex items-center">
                         <img src="./F1.png" alt="" className="h-10" />
                     </div>
-                    <div className="w-[40%] ">
+
+
+                    <div className="hidden md:block w-[40%]">
                         <div className="relative">
                             <input
                                 type="text"
@@ -22,47 +25,50 @@ const Header = () => {
                         </div>
                     </div>
 
-                    <div className="flex gap-[52px] text-gray-600">
+
+                    <div className="hidden md:flex gap-[52px] text-gray-600">
                         <a href="/" className="hover:text-purple-500">Home</a>
                         <a href="/about" className="hover:text-purple-500">About</a>
                         <a href="/contact" className="hover:text-purple-500">Contact Us</a>
                         <a href="/blog" className="hover:text-purple-500">Blog</a>
                     </div>
 
-                    <div className="flex gap-[24px]">
+
+                    <div className="hidden md:flex gap-[24px]">
                         <a href="/wishlist">
-                            <img src="./F3.png" alt="Wishlist" className="" />
+                            <img src="./F3.png" alt="Wishlist" />
                         </a>
                         <a href="/cart">
-                            <img src="./F4.png" alt="Cart" className="" />
+                            <img src="./F4.png" alt="Cart" />
                         </a>
                         <a href="/profile">
-                            <img src="./F5.png" alt="User" className="" />
+                            <img src="./F5.png" alt="User" />
                         </a>
+                    </div>
+
+                    <div className="md:hidden">
+                        <i className="fas fa-bars text-2xl text-[#0B0B45]"></i>
                     </div>
                 </div>
             </header>
-            <div className="bg-[#1F1F1F] text-white w-full ">
-                <div className="  flex items-center   justify-between   px-[160px] py-[8px]">
-                    {/* Phones */}
+            <div className="bg-[#1F1F1F] text-white w-full  ">
+                <div className="hidden   md:flex items-center  justify-between px-[10px]   lg:px-[160px] py-[8px]">
                     <div className="flex items-center px-[20px]  border-r border-gray-600 cursor-pointer hover:text-purple-400 transition">
                         <img src="/F6.png" alt="Phones" className="w-5 h-5 object-contain" />
                         <span className="text-sm">Phones</span>
                     </div>
 
-                    {/* Computers */}
                     <div className="flex items-center px-[50px] border-r border-gray-600 cursor-pointer hover:text-purple-400 transition">
                         <img src="/F6.png" alt="Computers" className="w-5 h-5 object-contain" />
                         <span className="text-sm">Computers</span>
                     </div>
 
-                    {/* Smart Watches */}
                     <div className="flex items-center  px-[50px] border-r border-gray-600 cursor-pointer hover:text-purple-400 transition">
                         <img src="/F6.png" alt="Smart Watches" className="w-5 h-5 object-contain" />
                         <span className="text-sm">Smart Watches</span>
                     </div>
 
-                    {/* Cameras */}
+
                     <div className="flex items-center px-[50px] border-r border-gray-600 cursor-pointer hover:text-purple-400 transition">
                         <img src="/F6.png" alt="Cameras" className="w-5 h-5 object-contain" />
                         <span className="text-sm">Cameras</span>

@@ -77,12 +77,12 @@ const ProductPage = () => {
 
     return (
         <>
-            <div className="px-[160px] p-[40px]  flex">
+            <div className="md:px-[10px] lg:px-[160px] p-[40px]  flex">
                 {/* layout1 */}
-                <div className='w-[25%]'>
+                <div className='hidden md:block w-[25%]'>
                     <div className="py-[20px]">
                         <div style={{ padding: "20px" }}>
-                            <Breadcrumb separator=">"> 
+                            <Breadcrumb separator=">">
                                 <Breadcrumb.Item>Home</Breadcrumb.Item>
                                 <Breadcrumb.Item>Catalog</Breadcrumb.Item>
                                 <Breadcrumb.Item>Smartphones</Breadcrumb.Item>
@@ -90,7 +90,7 @@ const ProductPage = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white p-4">
+                    <div className="  md:bg-white p-2 ">
                         {/* PRICE */}
                         <div className="border-b border-[#DFDFDF] pb-4 mb-4">
                             <h3 className="text-[18px] flex justify-between items-center cursor-pointer pb-[16px] ">
@@ -212,7 +212,7 @@ const ProductPage = () => {
                 </div>
                 {/* layout2 */}
                 <div className='w-[100%] mt-[10%] ml-[32px] '>
-                    <div className=' flex justify-between items-center'>
+                    <div className=' hidden md:flex justify-between items-center'>
                         <p>Seclect Product : <span className='font-[500] text-[20px]'>85</span></p>
                         <div className='relative'>
                             <input type="" className='border border-[#DFDFDF] rounded-[8px] py-[12px] pl-[16px]' placeholder='by rating' />
@@ -222,13 +222,28 @@ const ProductPage = () => {
                             />
                         </div>
                     </div>
+                    {/* Nút lọc và sắp xếp - chỉ hiển thị ở màn hình nhỏ hơn lg */}
+                    <div className=" md:hidden justify-between flex gap-4 px-4 py-3 border-b border-gray-200">
+                        <button className="flex items-center gap-2 px-[16px] py-[20px] border border-[#CECECE] rounded">
+                            <i className="fas fa-sliders-h"></i>
+                            Filters
+                        </button>
+                        <button className="flex items-center gap-2 px-[16px] py-[20px] bg-white border border-gray-300 rounded">
+                            By rating
+                            <i className="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
                     {/* phone */}
                     <div className='py-[40px]'>
-                        <div className="grid grid-cols-3 items-center gap-[16px] mt-[32px]" >
-                            {Phone.map((item) => (
-                                <div key={item.id} className="bg-[#F6F6F6] border-none rounded-[10px] items-center pt-[72px] ">
-                                    <div className="relative px-[54px] ">
-                                        <img src={item.img} alt="" className="w-[160px] h-[160px] bg-[cover]" />
+                        <div className="grid grid-cols-2 md:grid-cols-3 items-center gap-[16px] mt-[32px]" >
+                            {Phone.map((item, index) => (
+                                <div
+                                    key={item.id}
+                                    className={`bg-[#F6F6F6] border-none rounded-[10px] items-center pt-[72px] ${index === Phone.length - 1 ? 'hidden md:block' : ''
+                                        }`}
+                                >
+                                    <div className="relative px-[10px] md:px-[20px] lg:px-[30px] xl:px-[54px] flex justify-center">
+                                        <img src={item.img} alt="" className="w-[160px] flex  h-[160px] bg-contain" />
                                         <span className="absolute top-[-35px] right-9">
                                             {item.liked ? (
                                                 <i className="fa-solid fa-heart text-red-500"></i>
@@ -236,7 +251,6 @@ const ProductPage = () => {
                                                 <i className="fa-regular fa-heart"></i>
                                             )}
                                         </span>
-
 
                                     </div>
                                     <div className="mb-[24px]">
