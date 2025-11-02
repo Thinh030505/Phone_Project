@@ -15,6 +15,7 @@ import Step1 from './Layout/Step1.jsx';
 import Step3 from './Layout/Step3.jsx';
 import PageProduct from './Pages/PageProduct.jsx';
 import PhonePage from './Pages/PhonePage.jsx';
+import Cart from './Layout/Cart.jsx';
 import 'antd/dist/reset.css';
 import {
   createBrowserRouter,
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
   {
     path: "/PhonePage",
     Component: PhonePage,
+  },
+  {
+    path: "/Cart",
+    Component: Cart,
   }
 
 

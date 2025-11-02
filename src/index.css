@@ -1,1 +1,190 @@
 @import "tailwindcss";
+
+/* Custom Swiper Styles */
+.product-swiper .swiper-button-next,
+.product-swiper .swiper-button-prev,
+.discount-swiper .swiper-button-next,
+.discount-swiper .swiper-button-prev {
+    color: #000;
+    background: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.product-swiper .swiper-button-next:hover,
+.product-swiper .swiper-button-prev:hover,
+.discount-swiper .swiper-button-next:hover,
+.discount-swiper .swiper-button-prev:hover {
+    background: #000;
+    color: white;
+    transform: scale(1.1);
+}
+
+.product-swiper .swiper-button-next::after,
+.product-swiper .swiper-button-prev::after,
+.discount-swiper .swiper-button-next::after,
+.discount-swiper .swiper-button-prev::after {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.product-swiper .swiper-pagination-bullet,
+.discount-swiper .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background: #000;
+    opacity: 0.3;
+    transition: all 0.3s ease;
+}
+
+.product-swiper .swiper-pagination-bullet-active,
+.discount-swiper .swiper-pagination-bullet-active {
+    opacity: 1;
+    background: #000;
+    transform: scale(1.2);
+}
+
+.featured-swiper .swiper-button-next,
+.featured-swiper .swiper-button-prev {
+    color: #000;
+    background: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.featured-swiper .swiper-button-next:hover,
+.featured-swiper .swiper-button-prev:hover {
+    background: #000;
+    color: white;
+    transform: scale(1.1);
+}
+
+.featured-swiper .swiper-button-next::after,
+.featured-swiper .swiper-button-prev::after {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Hero Swiper Styles */
+.hero-swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.hero-swiper .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-swiper .swiper-button-next,
+.hero-swiper .swiper-button-prev {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.hero-swiper .swiper-button-next:hover,
+.hero-swiper .swiper-button-prev:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.hero-swiper .swiper-button-next::after,
+.hero-swiper .swiper-button-prev::after {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.hero-swiper .swiper-pagination {
+    bottom: 30px !important;
+}
+
+.hero-swiper .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    margin: 0 6px !important;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+    opacity: 1;
+    background: white;
+    transform: scale(1.3);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* Animations */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-in-right {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.8s ease-out;
+}
+
+.animate-slide-up {
+    animation: slide-up 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.animate-fade-in-right {
+    animation: fade-in-right 0.8s ease-out;
+}
+
+.animation-delay-200 {
+    animation-delay: 0.2s;
+}
+
+.animation-delay-400 {
+    animation-delay: 0.4s;
+}
+
+.animation-delay-600 {
+    animation-delay: 0.6s;
+}
+
+.animation-delay-800 {
+    animation-delay: 0.8s;
+}
