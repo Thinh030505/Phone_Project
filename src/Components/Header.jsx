@@ -55,23 +55,23 @@ const Header = () => {
                 <div className="hidden   md:flex items-center  justify-between px-[10px]   lg:px-[160px] py-[8px]">
                     <div className="flex items-center px-[20px]  border-r border-gray-600 cursor-pointer hover:text-purple-400 transition">
                         <img src="/F6.png" alt="Phones" className="w-5 h-5 object-contain" />
-                        <span className="text-sm">Phones</span>
+                        <span className="text-sm">BOOK</span>
                     </div>
 
                     <div className="flex items-center px-[50px] border-r border-gray-600 cursor-pointer hover:text-purple-400 transition">
                         <img src="/F6.png" alt="Computers" className="w-5 h-5 object-contain" />
-                        <span className="text-sm">Computers</span>
+                        <span className="text-sm">IS</span>
                     </div>
 
                     <div className="flex items-center  px-[50px] border-r border-gray-600 cursor-pointer hover:text-purple-400 transition">
                         <img src="/F6.png" alt="Smart Watches" className="w-5 h-5 object-contain" />
-                        <span className="text-sm">Smart Watches</span>
+                        <span className="text-sm">YOUR</span>
                     </div>
 
 
                     <div className="flex items-center px-[50px] border-r border-gray-600 cursor-pointer hover:text-purple-400 transition">
                         <img src="/F6.png" alt="Cameras" className="w-5 h-5 object-contain" />
-                        <span className="text-sm">Cameras</span>
+                        <span className="text-sm">FUTURE</span>
                     </div>
 
                     {/* Headphones */}

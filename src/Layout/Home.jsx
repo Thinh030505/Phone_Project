@@ -220,224 +220,272 @@ const Home = () => {
     ]
     return (
         <>
-            {/* Hero Section - Modern & Clean */}
-            <div className="relative bg-gradient-to-br from-[#0F0F10] via-[#1a1a1f] to-[#0F0F10] text-white overflow-hidden">
+            {/* Hero Section - Simple & Clean */}
+            <div className="relative w-full bg-white py-12 md:py-20">
                 <Swiper
-                    modules={[Navigation, Pagination, Autoplay, EffectFade]}
-                    effect="fade"
+                    modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={0}
                     slidesPerView={1}
                     navigation={true}
                     pagination={{
                         clickable: true,
-                        dynamicBullets: true,
                     }}
                     autoplay={{
-                        delay: 6000,
+                        delay: 4000,
                         disableOnInteraction: false,
                     }}
                     loop={true}
-                    speed={1200}
-                    className="hero-swiper"
+                    speed={600}
+                    className="hero-swiper-simple"
                 >
                     {heroSlides.map((slide) => (
                         <SwiperSlide key={slide.id}>
-                            <div className="relative min-h-[550px] md:min-h-[650px] lg:min-h-[750px] flex items-center">
-                                <div className="container mx-auto px-[20px] md:px-[100px] xl:px-[160px] py-16 w-full">
-                                    <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-16">
-                                        {/* Left Content */}
-                                        <div className="flex flex-col justify-center text-center lg:text-left">
-                                            <p className="text-gray-400 text-[18px] md:text-[22px] mb-3 font-light tracking-wide">
-                                                {slide.subtitle}
-                                            </p>
-                                            <h1 className="text-[60px] sm:text-[70px] md:text-[80px] lg:text-[100px] font-light leading-[1.1] mb-6">
-                                                <span className="block">{slide.title}</span>
-                                                <span className="block font-bold text-white mt-2">{slide.titleBold}</span>
-                            </h1>
-                                            <p className="text-gray-300 text-[15px] md:text-[17px] mb-8 max-w-[500px] mx-auto lg:mx-0 leading-relaxed">
-                                                {slide.description}
-                                            </p>
-                                            
-                                            {/* Book Info Card */}
-                                            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 mb-8 max-w-[450px] mx-auto lg:mx-0">
-                                                <p className="text-white font-semibold text-lg mb-2">{slide.bookTitle}</p>
-                                                <p className="text-gray-400 text-sm">📖 {slide.author}</p>
-                                            </div>
+                            <div className="container mx-auto px-5 md:px-12 lg:px-20">
+                                <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-16">
+                                    {/* Left Content */}
+                                    <div className="flex flex-col justify-center space-y-5 text-center lg:text-left order-2 lg:order-1">
+                                        <p className="text-gray-500 text-sm md:text-base font-medium uppercase tracking-wider">
+                                            {slide.subtitle}
+                                        </p>
 
-                                            {/* Buttons */}
-                                            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-                                                <button 
-                                                    onClick={() => handleProductClick(slide.id)}
-                                                    className="px-8 py-4 bg-white text-black rounded-lg hover:bg-gray-100 transition-all duration-300 font-semibold text-base shadow-2xl hover:shadow-white/20 hover:scale-105"
-                                                >
-                                                    Mua Ngay
-                                                </button>
-                                                <button className="px-8 py-4 border-2 border-white/30 rounded-lg hover:border-white hover:bg-white/10 transition-all duration-300 font-medium text-base hover:scale-105">
-                                                    Khám Phá Thêm
-                                </button>
-                            </div>
-                        </div>
-                                        
-                                        {/* Right Image */}
-                                        <div className="flex justify-center lg:justify-end order-first lg:order-last">
-                                            <div className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[450px]">
-                                                {/* Decorative elements */}
-                                                <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
-                                                <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
-                                                
-                                                {/* Book Image */}
-                                                <div className="relative z-10">
-                                                    <div className="relative transform hover:scale-[1.02] transition-transform duration-500">
-                                                        <img
-                                                            src={slide.image}
-                                                            alt={slide.bookTitle}
-                                                            className="w-full h-auto object-contain drop-shadow-[0_20px_60px_rgba(0,0,0,0.5)] rounded-lg"
-                                                        />
-                                                        {/* Shine effect */}
-                                                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent rounded-lg"></div>
-                                                    </div>
-                                                </div>
-                                                
-                                                {/* Floating badge */}
-                                                <div className="absolute -top-6 -right-6 bg-gradient-to-r from-red-500 to-red-600 text-white px-5 py-2 rounded-full text-xs font-bold shadow-2xl animate-pulse">
-                                                    ⭐ Bestseller
-                                                </div>
-                                            </div>
+                                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
+                                            {slide.title} <span className="text-blue-600">{slide.titleBold}</span>
+                                        </h1>
+
+                                        <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0">
+                                            {slide.description}
+                                        </p>
+
+                                        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 max-w-md mx-auto lg:mx-0">
+                                            <p className="text-gray-900 font-semibold text-lg mb-1">
+                                                {slide.bookTitle}
+                                            </p>
+                                            <p className="text-gray-500 text-sm">
+                                                📖 {slide.author}
+                                            </p>
                                         </div>
-                        </div>
-                    </div>
-                </div>
+
+                                        <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+                                            <button
+                                                onClick={() => handleProductClick(slide.id)}
+                                                className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold text-base hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg"
+                                            >
+                                                Mua Ngay
+                                            </button>
+                                            <button className="px-8 py-3 bg-white text-gray-700 border-2 border-gray-300 rounded-lg font-semibold text-base hover:border-gray-400 hover:bg-gray-50 transition-all duration-200">
+                                                Khám Phá Thêm
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Right Image */}
+                                    <div className="flex justify-center lg:justify-end order-1 lg:order-2">
+                                        <div className="relative w-full max-w-sm lg:max-w-md">
+                                            <img
+                                                src={slide.image}
+                                                alt={slide.bookTitle}
+                                                className="w-full h-auto object-contain rounded-lg shadow-xl"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </SwiperSlide>
                     ))}
                 </Swiper>
             </div>
 
-            {/* Featured Products Section - Modern Grid Layout */}
+            {/* Featured Books Section - Modern Grid Layout */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-                {/* Top Left: PlayStation 5 */}
-                <div className="bg-white group hover:shadow-2xl transition-shadow duration-300">
+                {/* Top Left: Sách Kinh Tế */}
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 group hover:shadow-2xl transition-all duration-300">
                     <div className="flex flex-col md:flex-row items-center h-full">
                         <div className="w-full md:w-1/2 flex justify-center p-8 md:p-12">
                             <div className="relative">
-                            <img
-                                src="/F8.png"
-                                alt="Playstation 5"
-                                    className="w-full max-w-[400px] md:max-w-[513px] h-auto object-contain group-hover:scale-105 transition-transform duration-500"
-                            />
+                                <img
+                                    src="/V1.jpg"
+                                    alt="Sách Kinh Tế"
+                                    className="w-full max-w-[280px] md:max-w-[350px] h-auto object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-lg"
+                                />
                             </div>
                         </div>
                         <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-12 py-12 md:py-20 text-center md:text-left">
-                            <h2 className="text-[32px] sm:text-[40px] md:text-[52px] font-medium mb-4">
-                                PlayStation <span className="font-bold">5</span>
+                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium mb-4 text-gray-800">
+                                Sách <span className="font-bold text-orange-600">Kinh Tế</span>
                             </h2>
-                            <p className="text-gray-600 text-[15px] md:text-[16px] leading-relaxed mb-6 max-w-[450px] mx-auto md:mx-0">
-                                Incredibly powerful CPUs, GPUs, and an SSD with integrated I/O will
-                                redefine your PlayStation experience.
+                            <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6 max-w-md mx-auto md:mx-0">
+                                Khám phá những nguyên lý kinh tế học, tài chính và đầu tư qua những cuốn sách được đánh giá cao nhất. Từ lý thuyết đến thực hành, nâng cao kiến thức tài chính của bạn.
                             </p>
-                            <button className="w-fit mx-auto md:mx-0 px-8 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium">
-                                Shop Now
+                            <button
+                                onClick={() => navigate('/products?category=kinh-te')}
+                                className="w-fit mx-auto md:mx-0 px-8 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg transition-all duration-300 font-medium hover:!from-orange-600 hover:!to-orange-700 hover:scale-105 active:scale-100 shadow-lg"
+                            >
+                                Khám Phá Ngay
                             </button>
                         </div>
                     </div>
                 </div>
 
-                {/* Top Right: MacBook Air */}
-                <div className="bg-gradient-to-br from-gray-50 to-gray-100 group hover:shadow-2xl transition-shadow duration-300">
+                {/* Top Right: Sách Lịch Sử */}
+                <div className="bg-gradient-to-br from-slate-50 to-blue-50 group hover:shadow-2xl transition-all duration-300">
                     <div className="flex flex-col-reverse md:flex-row items-center h-full">
                         <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-12 py-12 md:py-20 text-center md:text-left">
-                            <h2 className="text-[32px] sm:text-[40px] md:text-[64px] font-light mb-4">
-                                Macbook <span className="font-semibold">Air</span>
+                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4 text-gray-800">
+                                Sách <span className="font-semibold text-blue-600">Lịch Sử</span>
                             </h2>
-                            <p className="text-gray-600 text-[15px] md:text-[16px] leading-relaxed mb-6 max-w-[400px] mx-auto md:mx-0">
-                                The new 15-inch MacBook Air makes room for more of what you love with a spacious Liquid Retina display.
+                            <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6 max-w-md mx-auto md:mx-0">
+                                Tìm hiểu về quá khứ để hiểu rõ hơn về hiện tại và tương lai. Những câu chuyện lịch sử hấp dẫn, các sự kiện quan trọng và bài học từ quá khứ.
                             </p>
-                            <button className="w-fit mx-auto md:mx-0 px-8 py-3 border-2 border-black rounded-lg hover:bg-black hover:text-white transition-all font-medium">
-                                Shop Now
+                            <button
+                                onClick={() => navigate('/products?category=lich-su')}
+                                className="w-fit mx-auto md:mx-0 px-8 py-3 border-2 border-blue-600 text-blue-600 rounded-lg transition-all duration-300 font-medium hover:!bg-blue-600 hover:!text-white hover:scale-105 active:scale-100"
+                            >
+                                Khám Phá Ngay
                             </button>
                         </div>
                         <div className="w-full md:w-1/2 flex justify-center md:justify-end p-8 md:p-12">
                             <div className="relative">
                                 <img
-                                    src="/F12.png"
-                                    alt="MacBook Air"
-                                    className="w-full max-w-[500px] md:max-w-[600px] h-auto object-contain group-hover:scale-105 transition-transform duration-500"
+                                    src="/V2.webp"
+                                    alt="Sách Lịch Sử"
+                                    className="w-full max-w-[280px] md:max-w-[350px] h-auto object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-lg"
                                 />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Bottom Left: AirPods Max */}
-                <div className="bg-white group hover:shadow-2xl transition-shadow duration-300">
-                    <div className="flex flex-col md:flex-row items-center h-full min-h-[300px]">
+                {/* Bottom Left: Sách Tâm Lý */}
+                <div className="bg-gradient-to-br from-pink-50 to-purple-50 group hover:shadow-2xl transition-all duration-300">
+                    <div className="flex flex-col md:flex-row items-center h-full min-h-[350px]">
                         <div className="w-full md:w-1/2 flex justify-center p-8 md:p-12">
                             <div className="relative">
                                 <img
-                                    src="/F9.png"
-                                    alt="Apple AirPods Max"
-                                    className="w-full max-w-[280px] md:max-w-[300px] h-auto object-contain group-hover:scale-110 transition-transform duration-500"
+                                    src="/V3.webp"
+                                    alt="Sách Tâm Lý"
+                                    className="w-full max-w-[250px] md:max-w-[320px] h-auto object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-lg"
                                 />
                             </div>
-                                </div>
+                        </div>
                         <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-12 py-8 md:py-16 text-center md:text-left">
-                            <h2 className="text-[28px] sm:text-[32px] md:text-[36px] font-normal mb-3">
-                                Apple AirPods <span className="font-semibold">Max</span>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal mb-3 text-gray-800">
+                                Sách <span className="font-semibold text-purple-600">Tâm Lý</span>
                             </h2>
-                            <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-[300px] mx-auto md:mx-0">
-                                Computational audio. Listen, it's powerful
+                            <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-sm mx-auto md:mx-0 mb-4">
+                                Hiểu rõ bản thân và người khác qua những cuốn sách tâm lý học xuất sắc. Phát triển kỹ năng giao tiếp và quản lý cảm xúc.
                             </p>
-                            <button className="w-fit mx-auto md:mx-0 mt-6 px-6 py-2 border border-gray-300 rounded-lg hover:bg-black hover:text-white hover:border-black transition-all text-sm font-medium">
-                                Shop Now
+                            <button
+                                onClick={() => navigate('/products?category=tam-ly')}
+                                className="w-fit mx-auto md:mx-0 mt-2 px-6 py-2.5 border-2 border-purple-600 text-purple-600 rounded-lg transition-all duration-300 text-sm font-medium hover:!bg-purple-600 hover:!text-white hover:scale-105 active:scale-100"
+                            >
+                                Khám Phá Ngay
                             </button>
                         </div>
                     </div>
-                        </div>
+                </div>
 
-                {/* Bottom Right: Vision Pro */}
-                <div className="bg-[#1F1F1F] text-white group hover:shadow-2xl transition-shadow duration-300">
-                    <div className="flex flex-col md:flex-row items-center h-full min-h-[300px]">
+                {/* Bottom Right: Sách Bestseller */}
+                <div className="bg-gradient-to-br from-gray-900 to-black text-white group hover:shadow-2xl transition-all duration-300">
+                    <div className="flex flex-col md:flex-row items-center h-full min-h-[350px]">
                         <div className="w-full md:w-1/2 flex justify-center p-8 md:p-12">
                             <div className="relative">
                                 <img
-                                    src="/F10.png"
-                                    alt="Apple Vision Pro"
-                                    className="w-full max-w-[320px] md:max-w-[380px] h-auto object-contain group-hover:scale-110 transition-transform duration-500"
+                                    src="/V4.jpg"
+                                    alt="Sách Bestseller"
+                                    className="w-full max-w-[250px] md:max-w-[320px] h-auto object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl"
                                 />
+                                <div className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                    ⭐ HOT
+                                </div>
                             </div>
                         </div>
                         <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-12 py-8 md:py-16 text-center md:text-left">
-                            <h2 className="text-[28px] sm:text-[32px] md:text-[36px] font-medium mb-3">
-                                Apple Vision <span className="font-bold">Pro</span>
-                        </h2>
-                            <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-[300px] mx-auto md:mx-0">
-                                An immersive way to experience entertainment
-                        </p>
-                            <button className="w-fit mx-auto md:mx-0 mt-6 px-6 py-2 border-2 border-white/30 rounded-lg hover:bg-white hover:text-black transition-all text-sm font-medium">
-                            Shop Now
-                        </button>
-                    </div>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium mb-3">
+                                Sách <span className="font-bold text-yellow-400">Bestseller</span>
+                            </h2>
+                            <p className="text-gray-300 text-sm md:text-base leading-relaxed max-w-sm mx-auto md:mx-0 mb-4">
+                                Những cuốn sách được yêu thích nhất với nội dung sâu sắc và ý nghĩa. Được hàng triệu độc giả trên toàn thế giới đánh giá cao.
+                            </p>
+                            <button
+                                onClick={() => navigate('/products?category=bestseller')}
+                                className="w-fit mx-auto md:mx-0 mt-2 px-6 py-2.5 border-2 border-yellow-400 text-yellow-400 rounded-lg transition-all duration-300 text-sm font-medium hover:!bg-yellow-400 hover:!text-gray-900 hover:scale-105 active:scale-100"
+                            >
+                                Khám Phá Ngay
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div className="px-[20px] md:px-[160px] mt-[80px]">
-                <div className="flex justify-between items-center">
-                    <h2 className=" text-[20px] font-[500] sm:font-[500] sm:text-[24px]">Browse By Category</h2>
-                    <img className="w-[32px] h-[32px] bg-[cover]" src="/F13.png" alt="" />
+            {/* Browse By Category Section */}
+            <div className="relative px-5 md:px-12 lg:px-20 xl:px-32 py-16 md:py-24 mt-16 md:mt-24 overflow-hidden">
+                {/* Background Decorative Elements */}
+                <div className="absolute top-0 left-0 w-72 h-72 bg-blue-100/30 rounded-full blur-3xl -z-10"></div>
+                <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-100/30 rounded-full blur-3xl -z-10"></div>
+
+                {/* Section Header */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-12 md:mb-16">
+                    <div className="space-y-2">
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">
+                            Browse By <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Category</span>
+                        </h2>
+                        <p className="text-gray-600 text-sm md:text-base">
+                            Khám phá các thể loại sách phong phú và đa dạng
+                        </p>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer group">
+                        <span className="text-sm md:text-base font-medium">Xem tất cả</span>
+                        <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-[32px]">
-                    {categories.map((item) => (
+                {/* Categories Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+                    {categories.map((item, index) => (
                         <div
                             key={item.id}
-                            className="flex flex-col items-center bg-[#EBEBEB] p-6 rounded-xl"
+                            className="group relative cursor-pointer category-card"
+                            style={{
+                                animationDelay: `${index * 0.1}s`
+                            }}
                         >
-                            <img src={item.img} alt={item.name} className="w-[40px] h-[40px]" />
-                            <p className="mt-[8px] font-[500] text-[14px]">{item.name}</p>
+                            {/* Category Card */}
+                            <div className="relative flex flex-col items-center justify-center bg-white rounded-2xl p-6 md:p-8 border border-gray-200 hover:border-blue-300 transition-all duration-300 hover:shadow-xl hover:shadow-blue-100/50 hover:-translate-y-2 overflow-hidden">
+                                {/* Gradient Background on Hover */}
+                                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/0 to-purple-50/0 group-hover:from-blue-50/50 group-hover:to-purple-50/50 transition-all duration-300"></div>
+
+                                {/* Shine Effect */}
+                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                                </div>
+
+                                {/* Icon Container */}
+                                <div className="relative z-10 mb-4 w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg group-hover:shadow-blue-200">
+                                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-200/50 to-purple-200/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
+                                    <img
+                                        src={item.img}
+                                        alt={item.name}
+                                        className="relative z-10 w-10 h-10 md:w-12 md:h-12 object-cover rounded-lg group-hover:scale-110 transition-transform duration-300"
+                                    />
+                                </div>
+
+                                {/* Category Name */}
+                                <p className="relative z-10 text-center font-semibold text-sm md:text-base text-gray-700 group-hover:text-blue-600 transition-colors duration-300">
+                                    {item.name}
+                                </p>
+
+                                {/* Hover Arrow Indicator */}
+                                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </div>
-
             </div>
             <div className="px-[20px] py-[20px] md:px-[160px] p-[40px]">
                 <Tabs
@@ -480,33 +528,33 @@ const Home = () => {
                     {product.map((item) => (
                         <SwiperSlide key={item.id}>
                             <div className="bg-[#F6F6F6] border-none rounded-[10px] items-center pt-[72px] hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer group">
-                            <div className="px-[25px] relative lg:px-[40px] xl:px-[54px] ">
+                                <div className="px-[25px] relative lg:px-[40px] xl:px-[54px] ">
                                     <div className="relative overflow-hidden rounded-lg">
-                                <img 
-                                    src={item.img} 
-                                            alt={item.name} 
-                                            className="w-[160px] h-[160px] mx-auto cursor-pointer group-hover:scale-110 transition-transform duration-300 object-contain" 
-                                    onClick={() => handleProductClick(item.id)}
-                                />
+                                        <img
+                                            src={item.img}
+                                            alt={item.name}
+                                            className="w-[160px] h-[160px] mx-auto cursor-pointer group-hover:scale-110 transition-transform duration-300 object-contain"
+                                            onClick={() => handleProductClick(item.id)}
+                                        />
                                     </div>
-                                    <button className="absolute top-[-35px] right-9 bg-white rounded-full p-2 shadow-md hover:bg-red-50 transition-colors">
-                                    {item.like ? (
-                                        <i className="fa-solid fa-heart text-red-500"></i>
-                                    ) : (
+                                    <button className="absolute top-[-35px] right-9 bg-white rounded-full p-2 shadow-md transition-all duration-300 hover:!bg-red-50 hover:scale-110 active:scale-100">
+                                        {item.like ? (
+                                            <i className="fa-solid fa-heart text-red-500"></i>
+                                        ) : (
                                             <i className="fa-regular fa-heart text-gray-400 group-hover:text-red-500"></i>
-                                    )}
+                                        )}
                                     </button>
-                            </div>
-                            <div className="mb-[24px]">
+                                </div>
+                                <div className="mb-[24px]">
                                     <p className="pt-[16px] font-[500] text-center px-[16px] line-clamp-2 min-h-[48px]">{item.name}</p>
                                     <p className="font-[600] text-[24px] text-center text-blue-600 mt-2">{item.price}</p>
-                                <div className="flex justify-center mt-4">
-                                    <button 
-                                        onClick={() => handleProductClick(item.id)}
-                                            className="bg-black px-[62px] py-[16px]  rounded-md hover:bg-gray-800 transition-colors transform hover:scale-105"
-                                    >
+                                    <div className="flex justify-center mt-4">
+                                        <button
+                                            onClick={() => handleProductClick(item.id)}
+                                            className="bg-black px-[62px] py-[16px] rounded-md transition-all duration-300 transform hover:!bg-gray-800 hover:scale-105 active:scale-100"
+                                        >
                                             <span className="text-[#FFFFFF] font-semibold">Buy Now</span>
-                                    </button>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -548,37 +596,37 @@ const Home = () => {
                         return (
                             <SwiperSlide key={p.id}>
                                 <div className={`${cardBg} overflow-visible shadow-sm flex flex-col hover:shadow-xl transition-all duration-300 group`}>
-                                {/* IMAGE AREA */}
-                                <div className="relative h-[280px] flex items-center justify-center overflow-hidden pt-[30px]">
-                                    <img
-                                        src={p.img}
-                                        alt={p.title}
+                                    {/* IMAGE AREA */}
+                                    <div className="relative h-[280px] flex items-center justify-center overflow-hidden pt-[30px]">
+                                        <img
+                                            src={p.img}
+                                            alt={p.title}
                                             className="object-contain h-[240px] w-auto group-hover:scale-110 transition-transform duration-300"
-                                    />
-                                </div>
+                                        />
+                                    </div>
 
-                                {/* TEXT AREA */}
+                                    {/* TEXT AREA */}
                                     <div className="pl-[32px] py-6 flex flex-col justify-between">
-                                    <div className="text-center md:space-y-4">
+                                        <div className="text-center md:space-y-4">
                                             <p className="md:font-[300] text-[32px] whitespace-nowrap">{p.title}</p>
                                             <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>
-                                            {p.desc}
-                                        </p>
-                                    </div>
+                                                {p.desc}
+                                            </p>
+                                        </div>
 
-                                    {/* BUTTON */}
-                                    <div className="flex justify-center mt-[20px] md:mt-6">
-                                        <button
-                                                className={`rounded-md px-6 py-3 border transition-all duration-150 transform hover:scale-105 ${isDark
-                                                ? "border-white text-white hover:bg-white hover:text-black"
-                                                : "border-gray-300 text-black hover:bg-black hover:text-white"
-                                                }`}
-                                        >
-                                            Shop Now
-                                        </button>
+                                        {/* BUTTON */}
+                                        <div className="flex justify-center mt-[20px] md:mt-6">
+                                            <button
+                                                className={`rounded-md px-6 py-3 border transition-all duration-300 transform hover:scale-105 active:scale-100 ${isDark
+                                                    ? "border-white text-white hover:!bg-white hover:!text-black"
+                                                    : "border-gray-300 text-black hover:!bg-black hover:!text-white"
+                                                    }`}
+                                            >
+                                                Shop Now
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             </SwiperSlide>
                         );
                     })}
@@ -587,7 +635,7 @@ const Home = () => {
             <div className="md:px-[60px] lg:px-[160px] py-[40px]">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-[24px] font-[500] font-SF Pro Display">
-                    Discounts up to -50%
+                        Discounts up to -50%
                     </h2>
                     <div className="flex items-center gap-2 text-sm text-gray-600">
                         <span>Xem tất cả</span>
@@ -631,37 +679,37 @@ const Home = () => {
                                 <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold z-10">
                                     -50%
                                 </div>
-                                
+
                                 <div className="flex justify-center md:px-[15px] lg:px-[20px] xl:px-[54px] relative">
                                     <div className="relative overflow-hidden rounded-lg">
-                                <img 
-                                    src={item.img} 
-                                            alt={item.title} 
-                                            className="w-[160px] h-[160px] mx-auto cursor-pointer group-hover:scale-110 transition-transform duration-300 object-contain" 
-                                    onClick={() => handleProductClick(item.id)}
-                                />
+                                        <img
+                                            src={item.img}
+                                            alt={item.title}
+                                            className="w-[160px] h-[160px] mx-auto cursor-pointer group-hover:scale-110 transition-transform duration-300 object-contain"
+                                            onClick={() => handleProductClick(item.id)}
+                                        />
                                     </div>
-                                    <button className="absolute top-[-35px] right-9 bg-white rounded-full p-2 shadow-md hover:bg-red-50 transition-colors z-10">
+                                    <button className="absolute top-[-35px] right-9 bg-white rounded-full p-2 shadow-md transition-all duration-300 hover:!bg-red-50 hover:scale-110 active:scale-100 z-10">
                                         {item.liked === "false" ? (
                                             <i className="fa-regular fa-heart text-gray-400 group-hover:text-red-500"></i>
                                         ) : (
-                                        <i className="fa-solid fa-heart text-red-500"></i>
-                                    )}
+                                            <i className="fa-solid fa-heart text-red-500"></i>
+                                        )}
                                     </button>
-                            </div>
-                            <div className="mb-[24px]">
+                                </div>
+                                <div className="mb-[24px]">
                                     <p className="pt-[16px] font-[500] text-center px-[16px] line-clamp-2 min-h-[48px]">{item.title}</p>
                                     <div className="flex items-center justify-center gap-2 mt-2">
                                         <p className="font-[600] text-[24px] text-center text-red-600">{item.price}</p>
                                         <p className="text-gray-400 line-through text-sm">{(parseFloat(item.price.replace(/[^\d]/g, '')) * 2).toLocaleString()}đ</p>
                                     </div>
-                                <div className="flex justify-center mt-4">
-                                    <button 
-                                        onClick={() => handleProductClick(item.id)}
-                                            className="bg-gradient-to-r from-red-500 to-red-600 px-[62px] py-[16px] rounded-md hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 shadow-lg"
-                                    >
+                                    <div className="flex justify-center mt-4">
+                                        <button
+                                            onClick={() => handleProductClick(item.id)}
+                                            className="bg-gradient-to-r from-red-500 to-red-600 px-[62px] py-[16px] rounded-md transition-all duration-300 transform hover:!from-red-600 hover:!to-red-700 hover:scale-105 active:scale-100 shadow-lg"
+                                        >
                                             <span className="text-[#FFFFFF] font-semibold">Buy Now</span>
-                                    </button>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -677,7 +725,7 @@ const Home = () => {
                     <p className="text-[#787878] pt-[10px] pb-[40px]">
                         Commodo fames vitae vitae leo mauris in. Eu consequat.
                     </p>
-                    <button className="mt-6 px-[54px] py-[16px] items-center border border-white rounded-[10px] !text-white hover:bg-white hover:!text-black transition">
+                    <button className="mt-6 px-[54px] py-[16px] items-center border border-white rounded-[10px] !text-white transition-all duration-300 hover:!bg-white hover:!text-black hover:scale-105 active:scale-100">
                         Shop Now
                     </button>
                 </div>
