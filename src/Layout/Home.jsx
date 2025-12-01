@@ -1,5 +1,4 @@
-import { DiJava } from "react-icons/di";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
@@ -7,22 +6,108 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import { useNavigate } from 'react-router-dom';
+import { API_CONFIG } from '../config/api';
 
 import { Tabs } from 'antd';
 const Home = () => {
     const navigate = useNavigate();
+    const [apiProducts, setApiProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState('1'); // State để track tab đang active
 
     const handleProductClick = (productId) => {
-        navigate(`/ProductPage2?id=${productId}`);
+        console.log('🖱️ Click vào sản phẩm với ID:', productId);
+        const url = `/ProductPage2?id=${productId}`;
+        console.log('🔗 Navigate đến:', url);
+        navigate(url);
     };
 
-    // Hero slides data
-    const heroSlides = [
+    // Fetch products from API
+    useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        async function fetchProducts() {
+            try {
+                setLoading(true);
+                const res = await fetch(API_CONFIG.PRODUCTS_API, { signal });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+
+                // Xử lý nhiều format response
+                let list = [];
+                if (Array.isArray(data)) {
+                    list = data;
+                } else if (data.data && Array.isArray(data.data)) {
+                    list = data.data;
+                } else if (data.products && Array.isArray(data.products)) {
+                    list = data.products;
+                } else if (data.result && Array.isArray(data.result)) {
+                    list = data.result;
+                }
+
+                setApiProducts(list);
+                console.log('✅ Sản phẩm từ API đã load:', list.length, 'sản phẩm');
+                console.log('📦 Dữ liệu sản phẩm:', list);
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.warn('⚠️ Không thể load sản phẩm từ API, sử dụng dữ liệu mặc định:', err.message);
+                }
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchProducts();
+        return () => controller.abort();
+    }, []);
+
+    // Helper function để format giá
+    const formatPrice = (price) => {
+        if (!price) return "0đ";
+        if (typeof price === 'number') {
+            return price.toLocaleString('vi-VN') + 'đ';
+        }
+        if (typeof price === 'string') {
+            if (price.includes('đ') || price.includes('$')) {
+                return price;
+            }
+            const numPrice = parseFloat(price.replace(/[^\d]/g, ''));
+            if (!isNaN(numPrice)) {
+                return numPrice.toLocaleString('vi-VN') + 'đ';
+            }
+        }
+        return price;
+    };
+
+    // Transform API data to match existing format
+    const transformApiToProduct = (apiProduct, index) => {
+        const productId = apiProduct.id || apiProduct._id || index + 1;
+        const productName = apiProduct.title || apiProduct.name || 'Sản phẩm không có tên';
+        const productImage = apiProduct.image || apiProduct.img || apiProduct.cover || '/V1.jpg';
+        const productPrice = apiProduct.price || apiProduct.priceUsd || 0;
+        const productAuthor = apiProduct.author || apiProduct.brand || '';
+
+        return {
+            id: productId,
+            name: productName,
+            title: productName,
+            price: formatPrice(productPrice),
+            img: productImage,
+            image: productImage,
+            like: false,
+            liked: "false",
+            author: productAuthor,
+            desc: apiProduct.description || apiProduct.desc || 'Sách hay, đáng đọc'
+        };
+    };
+
+    // Hero slides data - Lấy từ API
+    const defaultHeroSlides = [
         {
             id: 1,
             subtitle: "Tri Thức. Vô Hạn.",
             title: "Sách Hay",
-            titleBold: "Mỗi Ngày",
             description: "Khám phá thế giới tri thức qua những cuốn sách tuyệt vời",
             image: "/V1.jpg",
             bookTitle: "Sapiens - Lược Sử Loài Người",
@@ -32,7 +117,6 @@ const Home = () => {
             id: 2,
             subtitle: "Kiến Thức. Sáng Tạo.",
             title: "Homo Deus",
-            titleBold: "Tương Lai",
             description: "Dự đoán về tương lai của nhân loại trong kỷ nguyên công nghệ",
             image: "/V2.webp",
             bookTitle: "Homo Deus - Lược Sử Tương Lai",
@@ -42,7 +126,6 @@ const Home = () => {
             id: 3,
             subtitle: "Học Hỏi. Phát Triển.",
             title: "21 Bài Học",
-            titleBold: "Thế Kỷ 21",
             description: "Những bài học quan trọng để đối mặt với thách thức hiện đại",
             image: "/V3.webp",
             bookTitle: "21 Bài Học Cho Thế Kỷ 21",
@@ -52,7 +135,6 @@ const Home = () => {
             id: 4,
             subtitle: "Thành Công. Thói Quen.",
             title: "Atomic Habits",
-            titleBold: "Thay Đổi",
             description: "Xây dựng thói quen tốt để tạo ra những thay đổi lớn",
             image: "/V4.jpg",
             bookTitle: "Atomic Habits - Thói Quen Nguyên Tử",
@@ -60,17 +142,70 @@ const Home = () => {
         }
     ];
 
-    const categories = [
+    // Tạo hero slides từ API
+    const heroSlides = apiProducts.length >= 4
+        ? apiProducts.slice(0, 4).map((p, idx) => {
+            const productId = p.id || p._id || idx + 1;
+            const productName = p.title || p.name || 'Sách Hay';
+            const productImage = p.image || p.img || p.cover || '/V1.jpg';
+            const productAuthor = p.author || p.brand || 'Tác giả';
+            const productDesc = p.description || p.desc || 'Khám phá thế giới tri thức qua những cuốn sách tuyệt vời';
+
+            // Tách tên sách thành title và titleBold
+            const nameParts = productName.split(' - ');
+            const title = nameParts[0] || productName.substring(0, 15);
+            const subtitles = ["Tri Thức. Vô Hạn.", "Kiến Thức. Sáng Tạo.", "Học Hỏi. Phát Triển.", "Thành Công. Thói Quen."];
+
+            return {
+                id: productId,
+                subtitle: subtitles[idx] || "Sách Hay",
+                title: title,
+                description: productDesc,
+                image: productImage,
+                bookTitle: productName,
+                author: productAuthor
+            };
+        })
+        : defaultHeroSlides;
+
+    // Categories - Tạo từ API nếu có category field, nếu không dùng default
+    const defaultCategories = [
         { id: 1, name: "Sách Kinh Tế", img: "/V1.jpg" },
         { id: 2, name: "Sách Lịch Sử", img: "/V2.webp" },
         { id: 3, name: "Sách Tâm Lý", img: "/V3.webp" },
         { id: 4, name: "Sách Kỹ Năng", img: "/V4.jpg" },
         { id: 5, name: "Sách Triết Học", img: "/V5.png" },
         { id: 6, name: "Sách Bestseller", img: "/V1.jpg" },
-    ]
+    ];
+
+    // Tạo categories từ API (lấy unique categories từ products)
+    const categories = apiProducts.length > 0
+        ? (() => {
+            const categoryMap = new Map();
+            apiProducts.forEach((p, idx) => {
+                const categoryName = p.category || p.type || `Danh mục ${idx + 1}`;
+                const categoryImg = p.image || p.img || p.cover || '/V1.jpg';
+                if (!categoryMap.has(categoryName)) {
+                    categoryMap.set(categoryName, {
+                        id: categoryMap.size + 1,
+                        name: categoryName,
+                        img: categoryImg
+                    });
+                }
+            });
+            const apiCategories = Array.from(categoryMap.values()).slice(0, 6);
+            // Nếu API có ít hơn 6 categories, bổ sung từ default
+            while (apiCategories.length < 6) {
+                const defaultIdx = apiCategories.length;
+                apiCategories.push(defaultCategories[defaultIdx] || defaultCategories[0]);
+            }
+            return apiCategories;
+        })()
+        : defaultCategories;
 
     const onChange = (key) => {
-        console.log(key)
+        console.log('Tab changed to:', key);
+        setActiveTab(key);
     };
     const items = [
         {
@@ -87,15 +222,14 @@ const Home = () => {
             label: 'Featured Product'
         },
     ];
-    // layout col-6 - Sách
-    const product = [
+    // layout col-6 - Sách (sử dụng API data nếu có, fallback về hardcode)
+    const defaultProduct = [
         {
             id: 1,
             name: "Sapiens - Lược Sử Loài Người",
             price: "95.400đ",
             img: "/V1.jpg",
             like: true,
-
         },
         {
             id: 2,
@@ -103,7 +237,6 @@ const Home = () => {
             price: "89.000đ",
             img: "/V2.webp",
             like: true,
-
         },
         {
             id: 3,
@@ -111,7 +244,6 @@ const Home = () => {
             price: "75.000đ",
             img: "/V3.webp",
             like: false,
-
         },
         {
             id: 4,
@@ -119,7 +251,6 @@ const Home = () => {
             price: "82.000đ",
             img: "/V4.jpg",
             like: false,
-
         },
         {
             id: 5,
@@ -127,7 +258,6 @@ const Home = () => {
             price: "78.000đ",
             img: "/V5.png",
             like: false,
-
         },
         {
             id: 6,
@@ -135,7 +265,6 @@ const Home = () => {
             price: "88.000đ",
             img: "/V1.jpg",
             like: false,
-
         },
         {
             id: 7,
@@ -143,7 +272,6 @@ const Home = () => {
             price: "95.000đ",
             img: "/V2.webp",
             like: false,
-
         },
         {
             id: 8,
@@ -151,13 +279,66 @@ const Home = () => {
             price: "72.000đ",
             img: "/V3.webp",
             like: false,
+        }
+    ];
 
+    // Filter sản phẩm theo tab đang active
+    const getFilteredProducts = () => {
+        if (apiProducts.length === 0) {
+            return defaultProduct;
         }
 
+        let filtered = [];
 
+        switch (activeTab) {
+            case '1': // New Arrival - Lấy 8 sản phẩm đầu tiên (mới nhất)
+                filtered = apiProducts.slice(0, 8);
+                break;
+            case '2': // Bestseller - Lấy sản phẩm có rating cao hoặc sản phẩm hot
+                // Nếu có field rating, sort theo rating, nếu không lấy 8 sản phẩm tiếp theo
+                filtered = apiProducts
+                    .filter(p => p.rating || p.isBestseller || p.hot || p.bestseller)
+                    .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+                    .slice(0, 8);
+                // Nếu không có sản phẩm bestseller, lấy 8 sản phẩm từ vị trí 4-12
+                if (filtered.length === 0) {
+                    filtered = apiProducts.slice(4, 12);
+                }
+                break;
+            case '3': // Featured Product - Lấy sản phẩm featured hoặc nổi bật
+                filtered = apiProducts
+                    .filter(p => p.featured || p.isFeatured || p.highlight)
+                    .slice(0, 8);
+                // Nếu không có sản phẩm featured, lấy 8 sản phẩm từ vị trí 8-16
+                if (filtered.length === 0) {
+                    filtered = apiProducts.slice(8, 16);
+                }
+                break;
+            default:
+                filtered = apiProducts.slice(0, 8);
+        }
 
-    ]
-    const product2 = [
+        // Transform và bổ sung nếu cần
+        const transformed = filtered.map((p, idx) => {
+            const transformedItem = transformApiToProduct(p, idx);
+            return {
+                ...transformedItem,
+                like: idx < 2 // 2 sản phẩm đầu tiên có like = true
+            };
+        });
+
+        // Nếu ít hơn 8, bổ sung từ default
+        while (transformed.length < 8 && transformed.length < defaultProduct.length) {
+            const defaultIdx = transformed.length;
+            transformed.push(defaultProduct[defaultIdx]);
+        }
+
+        return transformed;
+    };
+
+    // Sử dụng filtered products
+    const product = getFilteredProducts();
+    const defaultProduct2 = [
         {
             id: 1,
             title: "Sách Bestseller",
@@ -186,8 +367,28 @@ const Home = () => {
             img: "/V5.png",
             style: "dark"
         }
-    ]
-    const product3 = [
+    ];
+
+    // Sử dụng API data cho product2 (featured products)
+    const product2 = apiProducts.length > 0
+        ? (() => {
+            const apiItems = apiProducts.slice(0, 4).map((p, idx) => {
+                const transformed = transformApiToProduct(p, idx);
+                const styles = ["light", "light", "muted", "dark"];
+                return {
+                    ...transformed,
+                    style: styles[idx] || "light"
+                };
+            });
+            // Nếu API trả về ít hơn 4, bổ sung từ default
+            while (apiItems.length < 4) {
+                const defaultIdx = apiItems.length;
+                apiItems.push(defaultProduct2[defaultIdx] || defaultProduct2[0]);
+            }
+            return apiItems;
+        })()
+        : defaultProduct2;
+    const defaultProduct3 = [
         {
             id: 1,
             title: "Sapiens - Lược Sử Loài Người",
@@ -216,8 +417,153 @@ const Home = () => {
             img: "/V4.jpg",
             liked: "false"
         }
+    ];
 
-    ]
+    // Sử dụng API data cho product3 (discount products)
+    const product3 = apiProducts.length > 0
+        ? (() => {
+            const apiItems = apiProducts.slice(0, 4).map((p, idx) => {
+                const transformed = transformApiToProduct(p, idx);
+                return {
+                    ...transformed,
+                    liked: "false"
+                };
+            });
+            // Nếu API trả về ít hơn 4, bổ sung từ default
+            while (apiItems.length < 4) {
+                const defaultIdx = apiItems.length;
+                apiItems.push(defaultProduct3[defaultIdx] || defaultProduct3[0]);
+            }
+            return apiItems;
+        })()
+        : defaultProduct3;
+
+    // Featured Books Section - Lấy 4 sản phẩm từ API
+    const defaultFeaturedBooks = [
+        {
+            id: 1,
+            title: "Sách Kinh Tế",
+            titleBold: "Kinh Tế",
+            description: "Khám phá những nguyên lý kinh tế học, tài chính và đầu tư qua những cuốn sách được đánh giá cao nhất. Từ lý thuyết đến thực hành, nâng cao kiến thức tài chính của bạn.",
+            image: "/V1.jpg",
+            bgGradient: "from-amber-50 to-orange-50",
+            textColor: "text-gray-800",
+            titleColor: "text-orange-600",
+            buttonStyle: "bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:!from-orange-600 hover:!to-orange-700",
+            buttonText: "Buy Now",
+            layout: "normal", // normal hoặc reverse
+            category: "kinh-te"
+        },
+        {
+            id: 2,
+            title: "Sách",
+            titleBold: "Lịch Sử",
+            description: "Tìm hiểu về quá khứ để hiểu rõ hơn về hiện tại và tương lai. Những câu chuyện lịch sử hấp dẫn, các sự kiện quan trọng và bài học từ quá khứ.",
+            image: "/V2.webp",
+            bgGradient: "from-slate-50 to-blue-50",
+            textColor: "text-gray-800",
+            titleColor: "text-blue-600",
+            buttonStyle: "border-2 border-blue-600 text-blue-600 hover:!bg-blue-600 hover:!text-white",
+            buttonText: "Buy Now",
+            layout: "reverse",
+            category: "lich-su"
+        },
+        {
+            id: 3,
+            title: "Sách",
+            titleBold: "Tâm Lý",
+            description: "Hiểu rõ bản thân và người khác qua những cuốn sách tâm lý học xuất sắc. Phát triển kỹ năng giao tiếp và quản lý cảm xúc.",
+            image: "/V3.webp",
+            bgGradient: "from-pink-50 to-purple-50",
+            textColor: "text-gray-800",
+            titleColor: "text-purple-600",
+            buttonStyle: "border-2 border-purple-600 text-purple-600 hover:!bg-purple-600 hover:!text-white",
+            buttonText: "Buy Now",
+            layout: "normal",
+            category: "tam-ly"
+        },
+        {
+            id: 4,
+            title: "Sách",
+            titleBold: "Bestseller",
+            description: "Những cuốn sách được yêu thích nhất với nội dung sâu sắc và ý nghĩa. Được hàng triệu độc giả trên toàn thế giới đánh giá cao.",
+            image: "/V4.jpg",
+            bgGradient: "from-gray-900 to-black",
+            textColor: "text-white",
+            titleColor: "text-yellow-400",
+            buttonStyle: "border-2 border-yellow-400 text-yellow-400 hover:!bg-yellow-400 hover:!text-gray-900",
+            buttonText: "Buy Now",
+            layout: "normal",
+            category: "bestseller",
+            hasBadge: true
+        }
+    ];
+
+    // Tạo featured books từ API (luôn lấy 4 sản phẩm)
+    const featuredBooks = apiProducts.length >= 4
+        ? apiProducts.slice(0, 4).map((p, idx) => {
+            const productId = p.id || p._id || idx + 1;
+            const productName = p.title || p.name || 'Sách Hay';
+            const productImage = p.image || p.img || p.cover || '/V1.jpg';
+            const productDesc = p.description || p.desc || 'Khám phá thế giới tri thức qua những cuốn sách tuyệt vời';
+            const productCategory = p.category || p.type || `danh-muc-${idx + 1}`;
+
+            // Tách tên sách
+            const nameParts = productName.split(' - ');
+            const title = nameParts[0] || productName.substring(0, 10);
+            const titleBold = nameParts[1] || productName.substring(10) || 'Sách';
+
+            // Style config cho từng vị trí
+            const styles = [
+                {
+                    bgGradient: "from-amber-50 to-orange-50",
+                    textColor: "text-gray-800",
+                    titleColor: "text-orange-600",
+                    buttonStyle: "bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:!from-orange-600 hover:!to-orange-700",
+                    layout: "normal"
+                },
+                {
+                    bgGradient: "from-slate-50 to-blue-50",
+                    textColor: "text-gray-800",
+                    titleColor: "text-blue-600",
+                    buttonStyle: "border-2 border-blue-600 text-blue-600 hover:!bg-blue-600 hover:!text-white",
+                    layout: "reverse"
+                },
+                {
+                    bgGradient: "from-pink-50 to-purple-50",
+                    textColor: "text-gray-800",
+                    titleColor: "text-purple-600",
+                    buttonStyle: "border-2 border-purple-600 text-purple-600 hover:!bg-purple-600 hover:!text-white",
+                    layout: "normal"
+                },
+                {
+                    bgGradient: "from-gray-900 to-black",
+                    textColor: "text-white",
+                    titleColor: "text-yellow-400",
+                    buttonStyle: "border-2 border-yellow-400 text-yellow-400 hover:!bg-yellow-400 hover:!text-gray-900",
+                    layout: "normal",
+                    hasBadge: true
+                }
+            ];
+
+            const style = styles[idx] || styles[0];
+
+            return {
+                id: productId,
+                title: title,
+                description: productDesc,
+                image: productImage,
+                bgGradient: style.bgGradient,
+                textColor: style.textColor,
+                titleColor: style.titleColor,
+                buttonStyle: style.buttonStyle,
+                buttonText: "Buy Now",
+                layout: style.layout,
+                category: productCategory,
+                hasBadge: style.hasBadge || false
+            };
+        })
+        : defaultFeaturedBooks;
     return (
         <>
             {/* Hero Section - Simple & Clean */}
@@ -249,7 +595,7 @@ const Home = () => {
                                         </p>
 
                                         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
-                                            {slide.title} <span className="text-blue-600">{slide.titleBold}</span>
+                                            {slide.title}
                                         </h1>
 
                                         <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0">
@@ -270,21 +616,24 @@ const Home = () => {
                                                 onClick={() => handleProductClick(slide.id)}
                                                 className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold text-base hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg"
                                             >
-                                                Mua Ngay
+                                                Buy Now
                                             </button>
-                                            <button className="px-8 py-3 bg-white text-gray-700 border-2 border-gray-300 rounded-lg font-semibold text-base hover:border-gray-400 hover:bg-gray-50 transition-all duration-200">
-                                                Khám Phá Thêm
+                                            <button
+                                                onClick={() => handleProductClick(slide.id)}
+                                                className="px-8 py-3 bg-white text-gray-700 border-2 border-gray-300 rounded-lg font-semibold text-base hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
+                                            >
+                                                Buy Now
                                             </button>
                                         </div>
                                     </div>
 
                                     {/* Right Image */}
                                     <div className="flex justify-center lg:justify-end order-1 lg:order-2">
-                                        <div className="relative w-full max-w-sm lg:max-w-md">
+                                        <div className="relative w-full max-w-sm lg:max-w-md cursor-pointer" onClick={() => handleProductClick(slide.id)}>
                                             <img
                                                 src={slide.image}
                                                 alt={slide.bookTitle}
-                                                className="w-full h-auto object-contain rounded-lg shadow-xl"
+                                                className="w-full h-auto object-contain rounded-lg shadow-xl hover:scale-105 transition-transform duration-300"
                                             />
                                         </div>
                                     </div>
@@ -295,126 +644,57 @@ const Home = () => {
                 </Swiper>
             </div>
 
-            {/* Featured Books Section - Modern Grid Layout */}
+            {/* Featured Books Section - Modern Grid Layout - Lấy từ API */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-                {/* Top Left: Sách Kinh Tế */}
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 group hover:shadow-2xl transition-all duration-300">
-                    <div className="flex flex-col md:flex-row items-center h-full">
-                        <div className="w-full md:w-1/2 flex justify-center p-8 md:p-12">
-                            <div className="relative">
-                                <img
-                                    src="/V1.jpg"
-                                    alt="Sách Kinh Tế"
-                                    className="w-full max-w-[280px] md:max-w-[350px] h-auto object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-lg"
-                                />
-                            </div>
-                        </div>
-                        <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-12 py-12 md:py-20 text-center md:text-left">
-                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium mb-4 text-gray-800">
-                                Sách <span className="font-bold text-orange-600">Kinh Tế</span>
-                            </h2>
-                            <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6 max-w-md mx-auto md:mx-0">
-                                Khám phá những nguyên lý kinh tế học, tài chính và đầu tư qua những cuốn sách được đánh giá cao nhất. Từ lý thuyết đến thực hành, nâng cao kiến thức tài chính của bạn.
-                            </p>
-                            <button
-                                onClick={() => navigate('/products?category=kinh-te')}
-                                className="w-fit mx-auto md:mx-0 px-8 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg transition-all duration-300 font-medium hover:!from-orange-600 hover:!to-orange-700 hover:scale-105 active:scale-100 shadow-lg"
-                            >
-                                Khám Phá Ngay
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                {featuredBooks.map((book, idx) => {
+                    const isReverse = book.layout === "reverse";
+                    const isLarge = idx < 2; // 2 phần đầu lớn hơn
 
-                {/* Top Right: Sách Lịch Sử */}
-                <div className="bg-gradient-to-br from-slate-50 to-blue-50 group hover:shadow-2xl transition-all duration-300">
-                    <div className="flex flex-col-reverse md:flex-row items-center h-full">
-                        <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-12 py-12 md:py-20 text-center md:text-left">
-                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4 text-gray-800">
-                                Sách <span className="font-semibold text-blue-600">Lịch Sử</span>
-                            </h2>
-                            <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6 max-w-md mx-auto md:mx-0">
-                                Tìm hiểu về quá khứ để hiểu rõ hơn về hiện tại và tương lai. Những câu chuyện lịch sử hấp dẫn, các sự kiện quan trọng và bài học từ quá khứ.
-                            </p>
-                            <button
-                                onClick={() => navigate('/products?category=lich-su')}
-                                className="w-fit mx-auto md:mx-0 px-8 py-3 border-2 border-blue-600 text-blue-600 rounded-lg transition-all duration-300 font-medium hover:!bg-blue-600 hover:!text-white hover:scale-105 active:scale-100"
-                            >
-                                Khám Phá Ngay
-                            </button>
-                        </div>
-                        <div className="w-full md:w-1/2 flex justify-center md:justify-end p-8 md:p-12">
-                            <div className="relative">
-                                <img
-                                    src="/V2.webp"
-                                    alt="Sách Lịch Sử"
-                                    className="w-full max-w-[280px] md:max-w-[350px] h-auto object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-lg"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    return (
+                        <div
+                            key={book.id}
+                            className={`bg-gradient-to-br ${book.bgGradient} ${book.textColor} group hover:shadow-2xl transition-all duration-300 cursor-pointer`}
+                            onClick={() => handleProductClick(book.id)}
+                        >
+                            <div className={`flex ${isReverse ? 'flex-col-reverse md:flex-row' : 'flex-col md:flex-row'} items-center h-full ${!isLarge ? 'min-h-[350px]' : ''}`}>
+                                {/* Image Section */}
+                                <div className={`w-full md:w-1/2 flex ${isReverse ? 'justify-center md:justify-end' : 'justify-center'} p-8 md:p-12`}>
+                                    <div className="relative cursor-pointer" onClick={() => handleProductClick(book.id)}>
+                                        <img
+                                            src={book.image}
+                                            alt={book.title}
+                                            className={`w-full ${isLarge ? 'max-w-[280px] md:max-w-[350px]' : 'max-w-[250px] md:max-w-[320px]'} h-auto object-contain group-hover:scale-110 transition-transform duration-500 ${book.bgGradient.includes('gray-900') ? 'drop-shadow-2xl' : 'drop-shadow-lg'}`}
+                                            onError={(e) => {
+                                                e.target.src = '/V1.jpg';
+                                            }}
+                                        />
+                                        {book.hasBadge && (
+                                            <div className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                                ⭐ HOT
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
 
-                {/* Bottom Left: Sách Tâm Lý */}
-                <div className="bg-gradient-to-br from-pink-50 to-purple-50 group hover:shadow-2xl transition-all duration-300">
-                    <div className="flex flex-col md:flex-row items-center h-full min-h-[350px]">
-                        <div className="w-full md:w-1/2 flex justify-center p-8 md:p-12">
-                            <div className="relative">
-                                <img
-                                    src="/V3.webp"
-                                    alt="Sách Tâm Lý"
-                                    className="w-full max-w-[250px] md:max-w-[320px] h-auto object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-lg"
-                                />
-                            </div>
-                        </div>
-                        <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-12 py-8 md:py-16 text-center md:text-left">
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal mb-3 text-gray-800">
-                                Sách <span className="font-semibold text-purple-600">Tâm Lý</span>
-                            </h2>
-                            <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-sm mx-auto md:mx-0 mb-4">
-                                Hiểu rõ bản thân và người khác qua những cuốn sách tâm lý học xuất sắc. Phát triển kỹ năng giao tiếp và quản lý cảm xúc.
-                            </p>
-                            <button
-                                onClick={() => navigate('/products?category=tam-ly')}
-                                className="w-fit mx-auto md:mx-0 mt-2 px-6 py-2.5 border-2 border-purple-600 text-purple-600 rounded-lg transition-all duration-300 text-sm font-medium hover:!bg-purple-600 hover:!text-white hover:scale-105 active:scale-100"
-                            >
-                                Khám Phá Ngay
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Bottom Right: Sách Bestseller */}
-                <div className="bg-gradient-to-br from-gray-900 to-black text-white group hover:shadow-2xl transition-all duration-300">
-                    <div className="flex flex-col md:flex-row items-center h-full min-h-[350px]">
-                        <div className="w-full md:w-1/2 flex justify-center p-8 md:p-12">
-                            <div className="relative">
-                                <img
-                                    src="/V4.jpg"
-                                    alt="Sách Bestseller"
-                                    className="w-full max-w-[250px] md:max-w-[320px] h-auto object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl"
-                                />
-                                <div className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-3 py-1 rounded-full text-xs font-bold shadow-lg">
-                                    ⭐ HOT
+                                {/* Content Section */}
+                                <div className={`w-full md:w-1/2 flex flex-col justify-center px-6 md:px-12 ${isLarge ? 'py-12 md:py-20' : 'py-8 md:py-16'} text-center md:text-left`}>
+                                    <h2 className={`${isLarge ? 'text-3xl sm:text-4xl md:text-5xl' : 'text-2xl sm:text-3xl md:text-4xl'} ${isLarge && idx === 1 ? 'font-light' : 'font-medium'} ${isLarge ? 'mb-4' : 'mb-3'} ${book.textColor}`}>
+                                        {book.title} <span className={`${isLarge ? 'font-bold' : 'font-semibold'} ${book.titleColor}`}>{book.titleBold}</span>
+                                    </h2>
+                                    <p className={`${book.textColor === 'text-white' ? 'text-gray-300' : 'text-gray-600'} text-sm md:text-base leading-relaxed ${isLarge ? 'max-w-md' : 'max-w-sm'} mx-auto md:mx-0 ${isLarge ? 'mb-6' : 'mb-4'}`}>
+                                        {book.description}
+                                    </p>
+                                    <button
+                                        onClick={() => handleProductClick(book.id)}
+                                        className={`w-fit mx-auto md:mx-0 ${isLarge ? 'px-8 py-3' : 'mt-2 px-6 py-2.5'} ${book.buttonStyle} rounded-lg transition-all duration-300 ${isLarge ? 'font-medium hover:scale-105 active:scale-100 shadow-lg' : 'text-sm font-medium hover:scale-105 active:scale-100'}`}
+                                    >
+                                        {book.buttonText}
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-12 py-8 md:py-16 text-center md:text-left">
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium mb-3">
-                                Sách <span className="font-bold text-yellow-400">Bestseller</span>
-                            </h2>
-                            <p className="text-gray-300 text-sm md:text-base leading-relaxed max-w-sm mx-auto md:mx-0 mb-4">
-                                Những cuốn sách được yêu thích nhất với nội dung sâu sắc và ý nghĩa. Được hàng triệu độc giả trên toàn thế giới đánh giá cao.
-                            </p>
-                            <button
-                                onClick={() => navigate('/products?category=bestseller')}
-                                className="w-fit mx-auto md:mx-0 mt-2 px-6 py-2.5 border-2 border-yellow-400 text-yellow-400 rounded-lg transition-all duration-300 text-sm font-medium hover:!bg-yellow-400 hover:!text-gray-900 hover:scale-105 active:scale-100"
-                            >
-                                Khám Phá Ngay
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                    );
+                })}
             </div>
 
             {/* Browse By Category Section */}
@@ -489,13 +769,15 @@ const Home = () => {
             </div>
             <div className="px-[20px] py-[20px] md:px-[160px] p-[40px]">
                 <Tabs
-                    defaultActiveKey="1"
+                    activeKey={activeTab}
+                    onChange={onChange}
                     items={items}
                     tabBarGutter={16} // khoảng cách giữa tabs
                 />
             </div>
             <div className="px-[20px] md:px-[160px] py-[40px]">
                 <Swiper
+                    key={activeTab} // Force re-render khi tab thay đổi
                     modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={20}
                     slidesPerView={1}
@@ -522,12 +804,12 @@ const Home = () => {
                         delay: 3000,
                         disableOnInteraction: false,
                     }}
-                    loop={true}
+                    loop={product.length > 4} // Chỉ loop nếu có nhiều hơn 4 sản phẩm
                     className="product-swiper"
                 >
                     {product.map((item) => (
                         <SwiperSlide key={item.id}>
-                            <div className="bg-[#F6F6F6] border-none rounded-[10px] items-center pt-[72px] hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer group">
+                            <div className="bg-[#F6F6F6] border-none rounded-[10px] items-center pt-[72px] hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer group" onClick={() => handleProductClick(item.id)}>
                                 <div className="px-[25px] relative lg:px-[40px] xl:px-[54px] ">
                                     <div className="relative overflow-hidden rounded-lg">
                                         <img
@@ -595,9 +877,9 @@ const Home = () => {
 
                         return (
                             <SwiperSlide key={p.id}>
-                                <div className={`${cardBg} overflow-visible shadow-sm flex flex-col hover:shadow-xl transition-all duration-300 group`}>
+                                <div className={`${cardBg} overflow-visible shadow-sm flex flex-col hover:shadow-xl transition-all duration-300 group cursor-pointer`} onClick={() => handleProductClick(p.id)}>
                                     {/* IMAGE AREA */}
-                                    <div className="relative h-[280px] flex items-center justify-center overflow-hidden pt-[30px]">
+                                    <div className="relative h-[280px] flex items-center justify-center overflow-hidden pt-[30px] cursor-pointer" onClick={() => handleProductClick(p.id)}>
                                         <img
                                             src={p.img}
                                             alt={p.title}
@@ -617,12 +899,13 @@ const Home = () => {
                                         {/* BUTTON */}
                                         <div className="flex justify-center mt-[20px] md:mt-6">
                                             <button
+                                                onClick={() => handleProductClick(p.id)}
                                                 className={`rounded-md px-6 py-3 border transition-all duration-300 transform hover:scale-105 active:scale-100 ${isDark
                                                     ? "border-white text-white hover:!bg-white hover:!text-black"
                                                     : "border-gray-300 text-black hover:!bg-black hover:!text-white"
                                                     }`}
                                             >
-                                                Shop Now
+                                                Buy Now
                                             </button>
                                         </div>
                                     </div>
@@ -674,7 +957,7 @@ const Home = () => {
                 >
                     {product3.map((item) => (
                         <SwiperSlide key={item.id}>
-                            <div className="lg:bg-[#F6F6F6] bg-white border border-gray-200 rounded-[10px] items-center pt-[72px] hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group relative overflow-hidden">
+                            <div className="lg:bg-[#F6F6F6] bg-white border border-gray-200 rounded-[10px] items-center pt-[72px] hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group relative overflow-hidden" onClick={() => handleProductClick(item.id)}>
                                 {/* Badge giảm giá */}
                                 <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold z-10">
                                     -50%
@@ -726,7 +1009,7 @@ const Home = () => {
                         Commodo fames vitae vitae leo mauris in. Eu consequat.
                     </p>
                     <button className="mt-6 px-[54px] py-[16px] items-center border border-white rounded-[10px] !text-white transition-all duration-300 hover:!bg-white hover:!text-black hover:scale-105 active:scale-100">
-                        Shop Now
+                        Buy Now
                     </button>
                 </div>
                 <div>

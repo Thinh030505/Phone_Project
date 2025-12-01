@@ -16,17 +16,34 @@ import Step3 from './Layout/Step3.jsx';
 import PageProduct from './Pages/PageProduct.jsx';
 import PhonePage from './Pages/PhonePage.jsx';
 import Cart from './Layout/Cart.jsx';
+import Checkout from './Layout/Checkout.jsx';
+import ProductsApi from './Layout/ProductsApi.jsx';
+import ProductsApiPage from './Pages/ProductsApiPage.jsx';
+import Contact from './Layout/Contact.jsx'
+import ContactPage from './Pages/ContactPage.jsx';
+import AdminUserPage from './Pages/AdminUserPage.jsx';
+import AdminProductPage from './Pages/AdminProductPage.jsx';
+import AdminDashboardPage from './Pages/AdminDashboardPage.jsx';
+import AdminSetupPage from './Pages/AdminSetupPage.jsx';
+import LoginPage from './Pages/LoginPage.jsx';
+import RegisterPage from './Pages/RegisterPage.jsx';
+import DataUserPage from './Pages/DataUserPage.jsx';
 import 'antd/dist/reset.css';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import { ImOpt } from 'react-icons/im'
+import { ToastProvider } from './context/ToastContext'
 
 
 const router = createBrowserRouter([
   {
     path: "/",
+    Component: LoginPage,
+  },
+  {
+    path: "/home",
     Component: HomePage,
   },
   {
@@ -73,12 +90,70 @@ const router = createBrowserRouter([
     path: "/Cart",
     Component: Cart,
   }
+  ,
+  {
+    path: "/checkout",
+    Component: Checkout,
+  }
+
+  ,
+  {
+    path: "/products-api",
+    Component: ProductsApiPage,
+  },
+  {
+    path: "/ContactPage",
+    Component: ContactPage,
+  },
+  {
+    path: "/AdminPage",
+    Component: AdminUserPage,
+  },
+  {
+    path: "/ProductAdmin",
+    Component: AdminProductPage,
+  },
+  {
+    path: "/admin-setup",
+    Component: AdminSetupPage,
+  },
+  {
+    path: "/admin",
+    Component: AdminDashboardPage,
+  },
+  {
+    path: "/admin/users",
+    Component: AdminDashboardPage,
+  },
+  {
+    path: "/admin/products",
+    Component: AdminDashboardPage,
+  },
+  {
+    path: "/admin/orders",
+    Component: AdminDashboardPage,
+  },
+  {
+    path: "/login",
+    Component: LoginPage,
+  },
+  {
+    path: "/register",
+    Component: RegisterPage,
+  },
+  {
+    path: "/data-user",
+    Component: DataUserPage,
+  },
+
 
 
 ]);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ToastProvider>
+      <RouterProvider router={router} />
+    </ToastProvider>
   </StrictMode>,
 )

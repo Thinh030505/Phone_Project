@@ -1,5 +1,12 @@
+import { useNavigate } from 'react-router-dom'
 
 const Header = () => {
+    const navigate = useNavigate()
+
+    const handleUserIconClick = () => {
+        navigate('/data-user')
+    }
+
     return (
         <div className="w-[100%]">
             <header className="bg-[#4FFFF] px-[50px] sm:py-[16px]  lg:px-[160px] py-[16px]">
@@ -41,9 +48,13 @@ const Header = () => {
                         <a href="/cart">
                             <img src="./F4.png" alt="Cart" />
                         </a>
-                        <a href="/profile">
+                        <button
+                            onClick={handleUserIconClick}
+                            className="cursor-pointer hover:opacity-70 transition-opacity"
+                            aria-label="User Profile"
+                        >
                             <img src="./F5.png" alt="User" />
-                        </a>
+                        </button>
                     </div>
 
                     <div className="md:hidden">
@@ -53,37 +64,37 @@ const Header = () => {
             </header>
             <div className="bg-[#1F1F1F] text-white w-full  ">
                 <div className="hidden   md:flex items-center  justify-between px-[10px]   lg:px-[160px] py-[8px]">
-                    <div className="flex items-center px-[20px]  border-r border-gray-600 cursor-pointer hover:text-purple-400 transition">
-                        <img src="/F6.png" alt="Phones" className="w-5 h-5 object-contain" />
-                        <span className="text-sm">BOOK</span>
+                    <div className="flex items-center px-[20px]  border-r border-gray-600 cursor-pointer category-item hover:scale-105 hover:text-purple-400 transition">
+                        <img src="/F6.png" alt="Fiction" className="w-5 h-5 object-contain float-slow" />
+                        <span className="text-sm">Tiểu thuyết</span>
                     </div>
 
-                    <div className="flex items-center px-[50px] border-r border-gray-600 cursor-pointer hover:text-purple-400 transition">
-                        <img src="/F6.png" alt="Computers" className="w-5 h-5 object-contain" />
-                        <span className="text-sm">IS</span>
+                    <div className="flex items-center px-[40px] border-r border-gray-600 cursor-pointer category-item hover:scale-105 hover:text-purple-400 transition">
+                        <img src="/F6.png" alt="Bestsellers" className="w-5 h-5 object-contain float-slow" />
+                        <span className="text-sm">Bán chạy</span>
                     </div>
 
-                    <div className="flex items-center  px-[50px] border-r border-gray-600 cursor-pointer hover:text-purple-400 transition">
-                        <img src="/F6.png" alt="Smart Watches" className="w-5 h-5 object-contain" />
-                        <span className="text-sm">YOUR</span>
+                    <div className="flex items-center  px-[40px] border-r border-gray-600 cursor-pointer category-item hover:scale-105 hover:text-purple-400 transition">
+                        <img src="/F6.png" alt="New Releases" className="w-5 h-5 object-contain float-slow" />
+                        <span className="text-sm">Mới phát hành</span>
                     </div>
 
 
-                    <div className="flex items-center px-[50px] border-r border-gray-600 cursor-pointer hover:text-purple-400 transition">
-                        <img src="/F6.png" alt="Cameras" className="w-5 h-5 object-contain" />
-                        <span className="text-sm">FUTURE</span>
+                    <div className="flex items-center px-[40px] border-r border-gray-600 cursor-pointer category-item hover:scale-105 hover:text-purple-400 transition">
+                        <img src="/F6.png" alt="Kids" className="w-5 h-5 object-contain float-slow" />
+                        <span className="text-sm">Thiếu nhi</span>
                     </div>
 
-                    {/* Headphones */}
-                    <div className="flex items-center px-[50px] border-r border-gray-600 cursor-pointer hover:text-purple-400 transition">
-                        <img src="/F6.png" alt="Headphones" className="w-5 h-5 object-contain" />
-                        <span className="text-sm">Headphones</span>
+                    {/* Academic */}
+                    <div className="flex items-center px-[40px] border-r border-gray-600 cursor-pointer category-item hover:scale-105 hover:text-purple-400 transition">
+                        <img src="/F6.png" alt="Academic" className="w-5 h-5 object-contain float-slow" />
+                        <span className="text-sm">Học thuật</span>
                     </div>
 
-                    {/* Gaming */}
-                    <div className="flex items-center px-[20px] cursor-pointer hover:text-purple-400 transition">
-                        <img src="/F6.png" alt="Gaming" className="w-5 h-5 object-contain" />
-                        <span className="text-[16px]">Gaming</span>
+                    {/* Curated */}
+                    <div className="flex items-center px-[20px] cursor-pointer category-item hover:scale-105 hover:text-purple-400 transition">
+                        <img src="/F6.png" alt="Curated" className="w-5 h-5 object-contain float-slow" />
+                        <span className="text-[16px]">Tuyển chọn</span>
                     </div>
 
                 </div>
